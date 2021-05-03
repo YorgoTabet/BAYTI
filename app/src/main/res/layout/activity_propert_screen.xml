@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context=".PropertyScreenActivity"
+   >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/round_corners_home"
+        android:backgroundTint="@color/colorAccentLight"
+        android:id="@+id/TopContainer"
+        android:elevation="2dp"
+
+        >
+
+
+        <HorizontalScrollView
+            android:id="@+id/Imagediv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:paddingVertical="15dp"
+            android:paddingHorizontal="1dp"
+            android:background="@drawable/image_container_shape"
+            android:elevation="5dp"
+            android:layout_gravity="center"
+            >
+
+            <LinearLayout
+                android:id="@+id/ImageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                />
+
+        </HorizontalScrollView>
+
+        
+
+
+
+
+
+    </FrameLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/TopContainer"
+        android:orientation="vertical">
+
+
+
+
+        <EditText
+            android:textSize="35dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Title..."
+            android:id="@+id/TitleTxtView"
+            android:textFontWeight="12"
+            android:textColor="@color/colorAccentLight"
+            android:fontFamily="sans-serif"
+            android:enabled="false"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccentLight"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textFontWeight="12"
+            android:textColor="@color/colorAccentLight"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"/>
+        <EditText
+            android:textSize="16dp"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Description..."
+            android:gravity="center"
+            android:id="@+id/DescriptionEditTxt"
+            android:textColor="@drawable/edit_text_selector"
+            android:textColorHint="@drawable/edit_text_selector"
+            android:textAlignment="center"
+            android:background="@color/colorPrimary"
+            android:enabled="false"
+            />
+
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textFontWeight="12"
+            android:textColor="@color/colorAccentLight"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"/>
+        <EditText
+            android:gravity="center"
+            android:textSize="16dp"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Contact..."
+            android:id="@+id/ContactEditTxt"
+            android:textColor="@drawable/edit_text_selector"
+            android:textColorHint="@drawable/edit_text_selector"
+            android:textAlignment="center"
+            android:background="@color/colorPrimary"
+            android:enabled="false"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textFontWeight="12"
+            android:textColor="@color/colorAccentLight"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:gravity="center"
+            android:textSize="16dp"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Location"
+            android:id="@+id/LocationTextView"
+            android:textColor="@drawable/edit_text_selector"
+            android:textColorHint="@drawable/edit_text_selector"
+            android:textAlignment="center"
+            android:background="@color/colorPrimary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            >
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:id="@+id/editBtn"
+                android:layout_gravity="left"
+                android:background="@drawable/dark_button_selector"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:text="EDIT"
+                android:textFontWeight="1"
+                android:textSize="20dp"
+                android:textColor="@color/colorAccentLight"
+                android:visibility="invisible"
+                android:layout_marginBottom="10dp"
+                />
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:id="@+id/deleteBtn"
+                android:layout_gravity="right"
+                android:background="@drawable/dark_button_selector"
+                android:layout_marginStart="2dp"
+                android:gravity="center"
+                android:text="DELETE"
+                android:textFontWeight="1"
+                android:textSize="20dp"
+                android:textColor="@color/red"
+                android:visibility="invisible"
+                android:layout_marginBottom="10dp"
+
+                />
+
+        </LinearLayout>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:id="@+id/cancelBtn"
+            android:layout_gravity="center"
+            android:background="@drawable/dark_button_selector"
+            android:layout_marginEnd="2dp"
+            android:gravity="center"
+            android:text="cancel"
+            android:textFontWeight="1"
+            android:textSize="20dp"
+            android:textColor="@color/colorAccentLight"
+            android:visibility="invisible"
+            android:layout_marginBottom="10dp"
+            />
+
+
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/MessageButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:textSize="12dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/default_button_selector"
+        android:text="Message"
+        android:textFontWeight="1"
+        android:padding="10dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="10dp"
+        android:elevation="10dp"
+        />
+</RelativeLayout>

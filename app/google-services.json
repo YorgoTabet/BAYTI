@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "342472578977",
+    "firebase_url": "https://senior-774ec-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "senior-774ec",
+    "storage_bucket": "senior-774ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342472578977:android:7063ba38954c27f77c1de0",
+        "android_client_info": {
+          "package_name": "com.example.seniorprojectjan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342472578977-1gj0nvkqhqk31dsg1icjdb2419mcjpgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.seniorprojectjan",
+            "certificate_hash": "e3815a76d7a5cedc742aae75bff1d02c796731d1"
+          }
+        },
+        {
+          "client_id": "342472578977-uibn9nfde7eqp2onh2jhbjil99isnivn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDy0R4gYd2i8TlFdQDxuwWeAZBjXfN3NU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342472578977-uibn9nfde7eqp2onh2jhbjil99isnivn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

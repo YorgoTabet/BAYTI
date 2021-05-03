@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimaryDark"
+    >
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="200dp"
+      android:background="@drawable/round_corners_home"
+      android:backgroundTint="@color/colorAccentLight"
+      android:id="@+id/TopContainer"
+      android:elevation="2dp">
+
+
+      <HorizontalScrollView
+          android:id="@+id/Imagediv"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_margin="15dp"
+          android:paddingVertical="10dp"
+          android:paddingHorizontal="1dp"
+          android:background="@drawable/image_container_shape"
+          android:elevation="5dp">
+
+          <LinearLayout
+              android:id="@+id/ImageContainer"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:layout_gravity="center_vertical"
+              android:paddingBottom="25dp"
+              />
+
+      </HorizontalScrollView>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="17dp"
+          android:layout_gravity="bottom"
+          android:fontFamily="sans-serif"
+          android:text="Press on picture to remove"
+          android:textAlignment="center"
+          android:textColor="@color/colorPrimary"
+          android:textFontWeight="13"
+
+          />
+
+
+
+
+
+  </FrameLayout>
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/TopContainer">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/TopContainer"
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp"
+        android:paddingBottom="80dp">
+
+
+        <Button
+            android:id="@+id/UploadImageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/default_button_selector"
+            android:onClick="ImageSelect"
+            android:padding="10dp"
+            android:text="Browse Images"
+            android:textFontWeight="12"
+            android:elevation="2dp"/>
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Title..."
+            android:id="@+id/TitleEditTxt"
+            android:textColor="@drawable/edit_text_selector"
+            android:textColorHint="@drawable/edit_text_selector"
+            />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Description..."
+            android:id="@+id/DescriptionEditTxt"
+            android:textColor="@drawable/edit_text_selector"
+            android:textColorHint="@drawable/edit_text_selector"
+            />
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:hint="Contact..."
+            android:id="@+id/ContactEditTxt"
+            android:textColor="@drawable/edit_text_selector"
+            android:textColorHint="@drawable/edit_text_selector"
+
+
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Select Your Region"
+            android:gravity="center"
+            android:layout_marginBottom="10px"
+            android:textColor="@android:color/darker_gray"/>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:id="@+id/regionSelectButton"
+            android:text="Beirut"
+            android:background="@drawable/default_button_selector"
+            android:layout_gravity="center"
+            />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/LocationRadioGroup"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="50dp"
+            android:background="@color/colorPrimary"
+            android:padding="10dp"
+            android:elevation="2dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Include Location?"
+                android:textSize="20dp"
+                android:textColor="@android:color/darker_gray"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:id="@+id/RadioButtonYes"
+                android:textColor="@android:color/darker_gray"
+                android:text="Yes (recommended)"
+                android:checked="true"
+                />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:id="@+id/RadioButtonNo"
+                android:textColor="@android:color/darker_gray"
+                android:text="No"/>
+
+        </RadioGroup>
+    </LinearLayout>
+
+
+</ScrollView>
+
+
+<Button
+    android:id="@+id/UploadPost"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:background="@drawable/default_button_selector"
+    android:text="UPLOAD"
+    android:textFontWeight="12"
+    android:padding="10dp"
+    android:layout_marginBottom="15dp"
+    android:elevation="10dp"
+    >
+</Button>
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/loading"
+        android:layout_centerInParent="true"
+        android:padding="150dp"
+        android:layout_marginBottom="6dp"
+        android:elevation="15dp"
+        android:background="@color/nofocusbackground"
+        />
+</RelativeLayout>

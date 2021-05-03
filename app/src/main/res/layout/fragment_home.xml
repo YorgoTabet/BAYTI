@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:id="@+id/homeText"
+        android:background="@drawable/round_corners_home"
+        android:backgroundTint="@color/colorAccentLight"
+        android:elevation="2dp"
+       >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Featured"
+            android:textAlignment="center"
+            android:textSize="40dp"
+            android:textFontWeight="12"
+            android:textColor="@color/colorPrimary"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center"/>
+
+
+
+    </FrameLayout>
+<ProgressBar
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/homeText"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="20dp"
+    android:visibility="gone"
+    android:id="@+id/loading"/>
+    <ListView
+        android:id="@+id/FeaturedList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home Fragment"
+        android:textSize="30sp"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="20dp"
+        android:radius="15dp"
+        android:dividerHeight="10.0sp"
+        android:divider="@color/colorPrimaryDark"
+        android:layout_below="@id/homeText"
+        android:paddingTop="10dp"
+        />
+
+
+</RelativeLayout>

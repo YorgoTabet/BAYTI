@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".messagingActivity"
+    android:id="@+id/toppart"
+    >
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_View"
+        android:layout_below="@+id/toppart"
+        android:layout_above="@+id/bottom"
+        tools:ignore="NotSibling"
+        />
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:padding="5dp"
+       android:background="@drawable/round_corners_list_item"
+       android:id="@+id/bottom"
+       android:layout_alignParentBottom="true"
+       >
+
+       <EditText
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:id="@+id/text_send"
+           android:layout_toStartOf="@id/btn_send"
+           android:layout_centerVertical="true"
+           android:hint="Type a Message..."
+           android:background="@android:color/transparent"/>
+       <ImageButton
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:id="@+id/btn_send"
+           android:background="@drawable/ic_action_name"
+           android:layout_alignParentEnd="true"
+           android:layout_alignParentRight="true"
+           />
+
+   </RelativeLayout>
+
+</RelativeLayout>

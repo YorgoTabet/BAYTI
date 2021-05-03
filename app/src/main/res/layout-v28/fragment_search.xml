@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/round_corners_home"
+        android:backgroundTint="@color/colorAccentLight"
+        android:id="@+id/TopContainer"
+        android:elevation="2dp">
+
+       <RelativeLayout
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:layout_gravity="center">
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Region Search"
+               android:textAlignment="center"
+               android:textSize="30dp"
+               android:textFontWeight="12"
+               android:textColor="@color/colorPrimary"
+               android:textAllCaps="true"
+               android:fontFamily="sans-serif"
+               android:layout_gravity="center"
+               android:layout_above="@id/search_bar"
+              android:layout_margin="5dp"
+               android:layout_centerInParent="true"
+
+               />
+
+
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/search_bar"
+               android:layout_margin="10dp"
+               android:orientation="horizontal"
+               android:layout_centerInParent="true"
+               android:background="@drawable/image_container_shape"
+               >
+
+               <Button
+                   android:layout_width="200dp"
+                   android:layout_height="match_parent"
+                   android:id="@+id/regionSelectButton"
+                   android:text="Beirut"
+                   android:textFontWeight="1"
+                   android:textSize="20dp"
+                   android:textColor="@color/colorAccentLight"
+                   android:background="@drawable/dark_button_selector"
+                   />
+               <Button
+                   android:layout_width="45dp"
+                   android:layout_height="45dp"
+                   android:id="@+id/SearchButton"
+                   android:background="@drawable/ic_baseline_search_24"
+                   android:layout_marginLeft="3dp"
+                   android:textColor="@color/colorPrimaryDark"
+                   android:layout_gravity="center"
+                    />
+
+           </LinearLayout>
+       </RelativeLayout>
+
+    </FrameLayout>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TopContainer"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
+        android:id="@+id/loading"/>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/search_list"
+        android:dividerHeight="5.0sp"
+        android:divider="@color/colorPrimaryDark"
+        android:layout_marginHorizontal="20dp"
+        android:scrollbarFadeDuration="0"
+        android:layout_below="@+id/TopContainer"/>
+
+
+
+
+
+</RelativeLayout>
