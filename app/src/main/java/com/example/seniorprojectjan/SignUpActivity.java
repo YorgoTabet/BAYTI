@@ -186,10 +186,7 @@ public class SignUpActivity extends AppCompatActivity {
                                             // Sign in success, update UI with the signed-in user's information
                                             Log.d("Sign up stat", "createUserWithEmail:success");
                                             FirebaseUser user = mAuth.getCurrentUser();
-                                            FirebaseDatabase dbreff = FirebaseDatabase.getInstance();
-                                            DatabaseReference root = dbreff.getReference();
-                                            DatabaseReference users = root.child("users");
-                                            users.child(mAuth.getCurrentUser().getUid()).child("Username").setValue(mAuth.getCurrentUser().getDisplayName());
+
 
 
                                             //set his username
@@ -203,6 +200,10 @@ public class SignUpActivity extends AppCompatActivity {
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
                                                                 Log.d("Username", "User profile updated.");
+                                                                FirebaseDatabase dbreff = FirebaseDatabase.getInstance();
+                                                                DatabaseReference root = dbreff.getReference();
+                                                                DatabaseReference users = root.child("users");
+                                                                dbreff.getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("Username").setValue(usernameEditTxt.getText().toString());
                                                             }
                                                         }
                                                     });

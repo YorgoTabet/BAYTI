@@ -13,7 +13,7 @@ import java.util.List;
 public class RecyclerViewAdapterMessages extends  RecyclerView.Adapter<RecyclerViewAdapterMessages.CustomViewHolder> {
 
 
-        class CustomViewHolder extends RecyclerView.ViewHolder{
+         class CustomViewHolder extends RecyclerView.ViewHolder{
 
 
             TextView textView;
@@ -50,7 +50,7 @@ public class RecyclerViewAdapterMessages extends  RecyclerView.Adapter<RecyclerV
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return  new CustomViewHolder(LayoutInflater.from(parent.getContext()).inflate(viewType,parent,false));
+        return new CustomViewHolder(LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false));
     }
 
     @Override

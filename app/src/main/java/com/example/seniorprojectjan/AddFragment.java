@@ -33,10 +33,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -69,6 +71,12 @@ import static androidx.core.content.ContextCompat.getSystemService;
 public class AddFragment extends Fragment {
 
 
+
+
+
+
+
+
     // initializing items and UI items
     Button ImageBrowser;
     Button uploadBtn;
@@ -76,6 +84,7 @@ public class AddFragment extends Fragment {
     EditText pDesc;
     EditText pContact;
     RadioButton radioBtnYes;
+    RadioButton RadioButtonNo;
     RadioGroup RadioGrp;
     Button LocationButton;
     String[] Locations = {"Beirut", "South Lebanon", "Beqaa", "Aakar", "Mount Lebanon", "Nabatieh", "North Lebanon"};
@@ -88,7 +97,6 @@ public class AddFragment extends Fragment {
     BottomNavigationView navBar;
 
 
-
     //The One time Post ID;
     int PostId;
 
@@ -98,7 +106,7 @@ public class AddFragment extends Fragment {
     DatabaseReference postsList = RootReff.child("Posts");
 
     //Setting the File Storage Databse Instance
-    private  FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
     int PicCounter;
 
@@ -109,20 +117,35 @@ public class AddFragment extends Fragment {
 
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+                RadioButtonNo.setChecked(true);
+
+
+            }
+
+
+        }
+
+
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-
-
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(),new String[]{ Manifest.permission.ACCESS_FINE_LOCATION},1);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-
-
-
-
 
 
         return inflater.inflate(R.layout.fragment_add, container, false);
@@ -132,16 +155,13 @@ public class AddFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
 
-
-
-        if(requestCode==1 && resultCode==RESULT_OK)
-        {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
 
             ClipData clipData = data.getClipData();
 
-            if(clipData!=null){
+            if (clipData != null) {
 
-                for(int i=0; i< clipData.getItemCount();i++){
+                for (int i = 0; i < clipData.getItemCount(); i++) {
                     Uri imageUri = clipData.getItemAt(i).getUri();
                     try {
 
@@ -155,8 +175,7 @@ public class AddFragment extends Fragment {
                     }
                 }
 
-            }else
-            {
+            } else {
                 Uri imageUri = data.getData();
                 try {
                     Bitmap bitmap = decodeImage(imageUri);
@@ -172,9 +191,6 @@ public class AddFragment extends Fragment {
             setthelist(bitmaps);
 
 
-
-
-
         }
     }
 
@@ -183,6 +199,7 @@ public class AddFragment extends Fragment {
 
 
         navBar = getActivity().findViewById(R.id.Bottom_Nav);
+        RadioButtonNo = getActivity().findViewById(R.id.RadioButtonNo);
 
 
         lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -194,7 +211,6 @@ public class AddFragment extends Fragment {
         } else {
             uploadBtn.setEnabled(false);
         }
-
 
 
         //Initializing UI items
@@ -229,18 +245,17 @@ public class AddFragment extends Fragment {
         });
 
 
-
         getView().findViewById(R.id.UploadImageBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},100);
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
 
                 }
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setType("image/*");
-                startActivityForResult(intent,1);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -249,8 +264,7 @@ public class AddFragment extends Fragment {
             public void onClick(final View v) {
 
 
-
-               enableViews(getView(), false) ;
+                enableViews(getView(), false);
 
 
                 if (uploadBtn.isEnabled()) {
@@ -259,7 +273,7 @@ public class AddFragment extends Fragment {
 
                 }
 
-                if (pTitle.getText().length()==0 || pDesc.getText().length()==0 || pContact.getText().length()==0) {
+                if (pTitle.getText().length() == 0 || pDesc.getText().length() == 0 || pContact.getText().length() == 0) {
 
                     Toast.makeText(getContext(), "Please Fill All Fields", Toast.LENGTH_SHORT).show();
                     uploadBtn.setEnabled(true);
@@ -279,7 +293,7 @@ public class AddFragment extends Fragment {
                                 PostId = Integer.parseInt(task.getResult().getValue().toString());
                                 RootReff.child("NextPostId").setValue(PostId + 1);
                                 if (!bitmaps.isEmpty()) {
-                                    PicCounter=0;
+                                    PicCounter = 0;
                                     for (final Bitmap b : bitmaps) {
                                         PicCounter++;
 
@@ -305,8 +319,6 @@ public class AddFragment extends Fragment {
                                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
 
-
-
                                                 postsList.child(String.valueOf(PostId)).child("PostTitle").setValue(pTitle.getText().toString());
                                                 postsList.child(String.valueOf(PostId)).child("PostDescription").setValue(pDesc.getText().toString());
                                                 postsList.child(String.valueOf(PostId)).child("PostContactInfo").setValue(pContact.getText().toString());
@@ -315,9 +327,12 @@ public class AddFragment extends Fragment {
                                                 postsList.child(String.valueOf(PostId)).child("numberOfImages").setValue(String.valueOf(bitmaps.size()));
 
 
-
                                                 if (radioBtnYes.isChecked()) {
 
+                                                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                                                    }
                                                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                                                     final double longitude = location.getLongitude();
                                                     final double latitude = location.getLatitude();

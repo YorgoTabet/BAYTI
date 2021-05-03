@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -68,12 +70,10 @@ public class messagingActivity extends AppCompatActivity {
 
 
         intent = getIntent();
-        final String postID = intent.getStringExtra("postID");
         final String pUploaderID = intent.getStringExtra("pUploaderID");
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         reff = FirebaseDatabase.getInstance().getReference();
-        final DatabaseReference currentPost = reff.child("Posts").child(postID);
 
 
         final String roomId = pUploaderID.compareTo(firebaseUser.getUid())<0?pUploaderID+"_"+firebaseUser.getUid():firebaseUser.getUid()+"_"+pUploaderID;
@@ -144,27 +144,15 @@ public class messagingActivity extends AppCompatActivity {
             }
         });
 
-
-        currentPost.addValueEventListener(new ValueEventListener() {
+        reff.child("users").child(pUploaderID).child("Username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
 
-                pTitle = snapshot.child("PostTitle").getValue().toString();
-               setTitle(pTitle);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-                Toast.makeText(messagingActivity.this, "Failed to load user info", Toast.LENGTH_SHORT).show();
-                Intent mainpage= new Intent(messagingActivity.this,MainActivity.class);
-                startActivity(mainpage);
-                finish();
-
+                if(task.getResult().getValue()!=null)
+                setTitle(task.getResult().getValue().toString());
             }
         });
+
 
     }
 

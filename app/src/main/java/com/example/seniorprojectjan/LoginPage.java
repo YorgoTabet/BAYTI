@@ -104,6 +104,12 @@ public class LoginPage extends AppCompatActivity {
                                                                  if (task.isSuccessful()) {
                                                                      // Sign in success, update UI with the signed-in user's information
                                                                      FirebaseUser user = mAuth.getCurrentUser();
+
+                                                                     FirebaseDatabase dbreff = FirebaseDatabase.getInstance();
+                                                                     DatabaseReference root = dbreff.getReference();
+                                                                     DatabaseReference users = root.child("users");
+                                                                     FDb.getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("Username").setValue(user.getDisplayName());
+
                                                                      Toast toast = Toast.makeText(LoginPage.this, "Sign up successful!", Toast.LENGTH_LONG);
                                                                      toast.show();
                                                                      Log.d("SingInActivity", "signInWithCredential:success");
