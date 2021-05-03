@@ -62,7 +62,8 @@ public class messagingActivity extends AppCompatActivity {
 
          responseMessageList = new ArrayList<>();
         recyclerViewAdapterMessages= new RecyclerViewAdapterMessages(responseMessageList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapterMessages);
 
 
@@ -81,6 +82,8 @@ public class messagingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                //Clear the list to avoid duplicates
+                responseMessageList.clear();
                 //get the messages and display them
                 for(DataSnapshot s : snapshot.getChildren()){
 
@@ -111,7 +114,7 @@ public class messagingActivity extends AppCompatActivity {
 
                 }
 
-
+                recyclerView.scrollToPosition(recyclerViewAdapterMessages.getItemCount()-1);
             }
 
             @Override
