@@ -123,7 +123,7 @@ public class AddFragment extends Fragment {
 
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
                 RadioButtonNo.setChecked(true);
@@ -142,10 +142,13 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
         }
+
+
+
 
 
         return inflater.inflate(R.layout.fragment_add, container, false);
@@ -329,41 +332,44 @@ public class AddFragment extends Fragment {
 
                                                 if (radioBtnYes.isChecked()) {
 
-                                                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                                                    if (ActivityCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+                                                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                                        final double longitude = location.getLongitude();
+                                                        final double latitude = location.getLatitude();
+                                                        postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue(longitude + "," + latitude).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                RootReff.child("Latlngs").child(String.valueOf(PostId)).setValue(longitude + "," + latitude);
+                                                                Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(getContext(), MainActivity.class);
+                                                                startActivity(intent);
+                                                                getActivity().finish();
+
+                                                            }
+
+                                                        });
+
+                                                    } else {
+                                                        postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue("None").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
+                                                                Intent intent = new Intent(getContext(), ProfileFragment.class);
+                                                                startActivity(intent);
+                                                                getActivity().finish();
+
+                                                            }
+                                                        });
+
 
                                                     }
-                                                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                                    final double longitude = location.getLongitude();
-                                                    final double latitude = location.getLatitude();
-                                                    postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue(longitude+","+latitude).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            RootReff.child("Latlngs").child(String.valueOf(PostId)).setValue(longitude+","+latitude);
-                                                            Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(getContext(),MainActivity.class);
-                                                            startActivity(intent);
-                                                            getActivity().finish();
+                                                }
+                                        }
 
-                                                        }
-                                                    });
-
-                                                }else
-                                                    postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue("None").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(getContext(),ProfileFragment.class);
-                                                            startActivity(intent);
-                                                            getActivity().finish();
-
-                                                        }
-                                                    });
-
-
-                                            }
-                                        });
-
+                                    });
                                     }
 
 

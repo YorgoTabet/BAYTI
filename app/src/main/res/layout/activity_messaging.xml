@@ -63,6 +63,7 @@
            android:layout_toStartOf="@id/btn_send"
            android:layout_centerVertical="true"
            android:hint="Type a Message..."
+           android:textColorHint="@android:color/darker_gray"
            android:background="@android:color/transparent"
            android:layout_marginHorizontal="10dp"
            android:textColor="@android:color/white"/>
