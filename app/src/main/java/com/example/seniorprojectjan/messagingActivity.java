@@ -44,7 +44,6 @@ public class messagingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerViewAdapterMessages recyclerViewAdapterMessages;
     List<ResponseMessage> responseMessageList;
-
     String chatID;
 
 
