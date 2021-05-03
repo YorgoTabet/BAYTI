@@ -23,6 +23,7 @@
        android:background="@drawable/round_corners_list_item"
        android:id="@+id/bottom"
        android:layout_alignParentBottom="true"
+       android:layout_margin="15dp"
        >
 
        <EditText
@@ -32,7 +33,8 @@
            android:layout_toStartOf="@id/btn_send"
            android:layout_centerVertical="true"
            android:hint="Type a Message..."
-           android:background="@android:color/transparent"/>
+           android:background="@android:color/transparent"
+           android:layout_marginHorizontal="10dp"/>
        <ImageButton
            android:layout_width="40dp"
            android:layout_height="40dp"

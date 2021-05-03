@@ -46,6 +46,8 @@ public class messagingActivity extends AppCompatActivity {
     List<ResponseMessage> responseMessageList;
     String chatID;
 
+    String message = "";
+
 
 
     @Override
@@ -84,7 +86,14 @@ public class messagingActivity extends AppCompatActivity {
 
                     String epoche = s.getKey();
                     Log.i("I am epoche", epoche);
-                    String message = s.child("message").getValue().toString();
+
+
+                    if(s.child("message").getValue()!=null) {
+                        message = s.child("message").getValue().toString();
+                    }
+
+
+
 
                     if(s.child("sender").getValue().toString().equals(firebaseUser.getUid())){
 
