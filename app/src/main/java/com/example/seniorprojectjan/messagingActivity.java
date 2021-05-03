@@ -128,7 +128,7 @@ public class messagingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String msg = text_send.getText().toString();
-                if(!msg.equals(" ") && !equals("")){
+                if(!msg.equals(" ") && !equals("") && !msg.isEmpty()){
                     String timeofsend = String.valueOf(System.currentTimeMillis()/1000);
                     reff.child("userChats").child(pUploaderID).child(roomId).setValue("true");
                     reff.child("userChats").child(firebaseUser.getUid()).child(roomId).setValue("true");
