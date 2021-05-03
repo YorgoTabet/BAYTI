@@ -6,14 +6,40 @@
     android:layout_height="match_parent"
     tools:context=".ChatActivity"
     android:orientation="vertical"
-    android:theme="@style/ChatTheme"
-    android:backgroundTint="@color/colorPrimaryDark">
+    android:theme="@style/AppTheme"
+    android:backgroundTint="@color/colorPrimaryDark"
+    android:background="@color/colorPrimaryDark">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:id="@+id/homeText"
+        android:background="@drawable/round_corners_home"
+        android:backgroundTint="@color/colorAccentLight"
+        android:elevation="2dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chats"
+            android:textAlignment="center"
+            android:textSize="40dp"
+            android:textFontWeight="12"
+            android:textColor="@color/colorPrimary"
+            android:textAllCaps="true"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center"/>
 
+
+
+    </FrameLayout>
 
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/recycler_View"/>
+    android:id="@+id/recycler_View"
+    android:layout_below="@+id/homeText"
+    android:background="@color/colorPrimaryDark"/>
 
 
 

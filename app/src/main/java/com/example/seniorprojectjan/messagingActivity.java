@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +40,7 @@ public class messagingActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference reff;
 
-    String pTitle ;
+
     Intent intent;
 
     ImageButton btn_send;
@@ -46,7 +48,7 @@ public class messagingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerViewAdapterMessages recyclerViewAdapterMessages;
     List<ResponseMessage> responseMessageList;
-    String chatID;
+
 
     String message = "";
 
@@ -148,8 +150,11 @@ public class messagingActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
 
+
+                TextView username;
+                username = findViewById(R.id.username);
                 if(task.getResult().getValue()!=null)
-                setTitle(task.getResult().getValue().toString());
+                username.setText(task.getResult().getValue().toString());
             }
         });
 
