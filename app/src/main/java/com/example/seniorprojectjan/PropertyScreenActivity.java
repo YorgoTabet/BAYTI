@@ -15,8 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,9 +72,11 @@ public class PropertyScreenActivity extends AppCompatActivity {
     String pContactInfo ;
     String pRegion ;
     String pUploaderID ;
+    String pUploaderName ;
     LinearLayout imageContainer;
     boolean isloading = true;
     ValueEventListener ValueListener;
+    TextView uploadernameTxtView;
 
 
 
@@ -104,7 +108,9 @@ public class PropertyScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_propert_screen);
 
-        final Button messageBtn = findViewById(R.id.MessageButton);
+        final ImageButton messageBtn = findViewById(R.id.MessageButton);
+
+         uploadernameTxtView = findViewById(R.id.uploadername)  ;
 
         // Profile settings
         mAuth = FirebaseAuth.getInstance();
@@ -156,6 +162,17 @@ public class PropertyScreenActivity extends AppCompatActivity {
                      pContactInfo =  snapshot.child("PostContactInfo").getValue().toString();
                      pRegion =  snapshot.child("PostRegion").getValue().toString();
                      pUploaderID =  snapshot.child("PostUploaderID").getValue().toString();
+
+                     //getting the uploader name
+                    RootReff.child("users").child(pUploaderID).child("Username").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            pUploaderName = task.getResult().getValue().toString();
+                            uploadernameTxtView.setText(pUploaderName);
+                        }
+                    });
+
+
                      Log.i("UploaderID", pUploaderID);
                      if(pUploaderID.equals(currentUserId)){
 
@@ -238,6 +255,10 @@ public class PropertyScreenActivity extends AppCompatActivity {
 
                     Toast.makeText(PropertyScreenActivity.this, "Edit mode: ON", Toast.LENGTH_SHORT).show();
 
+                    ScrollView scrollView = findViewById(R.id.ScrollViewform);
+
+
+                    scrollView.fullScroll(View.FOCUS_DOWN);
                     cancelBtn.setVisibility(View.VISIBLE);
                     ContactEditTxt.setEnabled(true);
                     TitleTxtView.setEnabled(true);
@@ -260,17 +281,37 @@ public class PropertyScreenActivity extends AppCompatActivity {
                 else if (editBtn.getText().toString().toUpperCase().equals("SAVE") && TitleTxtView.getText().length()!=0 && DescriptionEditTxt.getText().length()!=0 && ContactEditTxt.getText().length()!=0) {
                     Log.i("You clicked the:","Save button");
 
-                    cancelBtn.setVisibility(View.INVISIBLE);
-                    postsList.child(postID).child("PostDescription").setValue(DescriptionEditTxt.getText().toString());
-                    postsList.child(postID).child("PostContactInfo").setValue(ContactEditTxt.getText().toString());
-                    postsList.child(postID).child("PostTitle").setValue(TitleTxtView.getText().toString());
-                    editBtn.setText("EDIT");
-                    Toast.makeText(PropertyScreenActivity.this, "SAVED", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(PropertyScreenActivity.this,PropertyScreenActivity.class);
-                    intent.putExtra("ID",postID);
-                    startActivity(intent);
-                    finish();
+                    new AlertDialog.Builder(PropertyScreenActivity.this)
+                            .setTitle("SAVE")
+                            .setMessage("Are you sure you want to save this entry?")
+
+
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+
+                                    cancelBtn.setVisibility(View.INVISIBLE);
+                                    postsList.child(postID).child("PostDescription").setValue(DescriptionEditTxt.getText().toString());
+                                    postsList.child(postID).child("PostContactInfo").setValue(ContactEditTxt.getText().toString());
+                                    postsList.child(postID).child("PostTitle").setValue(TitleTxtView.getText().toString());
+                                    editBtn.setText("EDIT");
+                                    Toast.makeText(PropertyScreenActivity.this, "SAVED", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(PropertyScreenActivity.this,PropertyScreenActivity.class);
+                                    intent.putExtra("ID",postID);
+                                    startActivity(intent);
+                                    finish();
+
+                                }
+                            })
+
+                            // A null listener allows the button to dismiss the dialog and take no further action.
+                            .setNegativeButton(android.R.string.no, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+
+
 
                 }
                 else{

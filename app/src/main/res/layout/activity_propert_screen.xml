@@ -51,11 +51,15 @@
     </FrameLayout>
 
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/TopContainer"
+    android:id="@+id/ScrollViewform">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/TopContainer"
+
         android:orientation="vertical">
 
 
@@ -164,6 +168,57 @@
             android:textColorHint="@drawable/edit_text_selector"
             android:textAlignment="center"
             android:background="@color/colorPrimary"/>
+       <LinearLayout
+           android:layout_width="300dp"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_gravity="center"
+           android:layout_marginBottom="10dp"
+           android:layout_marginTop="5dp"
+           android:gravity="center">
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text=" Uploaded by:"
+               android:textSize="12dp"
+               android:textFontWeight="12"
+               android:textColor="@color/colorAccentLight"
+               android:textAllCaps="true"
+               android:fontFamily="sans-serif"
+               android:layout_gravity="top"
+               android:layout_marginRight="10dp"
+               android:layout_marginTop="8dp"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="name"
+               android:textSize="20dp"
+               android:textFontWeight="12"
+               android:textColor="@color/colorAccentLight"
+               android:textAllCaps="true"
+               android:fontFamily="sans-serif"
+               android:layout_gravity="center"
+               android:maxWidth="150dp"
+               android:id="@+id/uploadername" />
+
+           <ImageButton
+               android:id="@+id/MessageButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:background="@drawable/dark_button_selector"
+               android:textFontWeight="1"
+               android:layout_marginBottom="5dp"
+               android:layout_marginRight="10dp"
+               android:elevation="0dp"
+               android:paddingHorizontal="10dp"
+               android:layout_marginTop="5dp"
+               android:src="@drawable/mesage_icon"
+               android:padding="5dp"
+               android:layout_marginLeft="10dp"
+               />
+
+
+       </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,9 +226,9 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_gravity="center"
-            android:layout_marginTop="15dp"
             android:padding="5dp"
             >
+
             <Button
                 android:layout_width="150dp"
                 android:layout_height="match_parent"
@@ -186,7 +241,7 @@
                 android:textFontWeight="1"
                 android:textSize="20dp"
                 android:textColor="@color/colorAccentLight"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
                 />
             <Button
@@ -201,7 +256,7 @@
                 android:textFontWeight="1"
                 android:textSize="20dp"
                 android:textColor="@color/red"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
 
                 />
@@ -219,7 +274,7 @@
             android:textFontWeight="1"
             android:textSize="20dp"
             android:textColor="@color/colorAccentLight"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_marginBottom="10dp"
             />
 
@@ -229,19 +284,7 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/MessageButton"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_alignParentBottom="true"
-        android:textSize="12dp"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/default_button_selector"
-        android:text="Message"
-        android:textFontWeight="1"
-        android:padding="10dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginRight="10dp"
-        android:elevation="10dp"
-        />
+</ScrollView>
+
+
 </RelativeLayout>
