@@ -48,6 +48,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PropertyScreenActivity extends AppCompatActivity {
 
@@ -115,7 +116,7 @@ public class PropertyScreenActivity extends AppCompatActivity {
         // Profile settings
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-         currentUserId = mAuth.getCurrentUser().getUid();
+         currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         Log.i("Current user ID", currentUserId);
 
 

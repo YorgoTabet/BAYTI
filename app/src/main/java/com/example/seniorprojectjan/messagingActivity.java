@@ -34,8 +34,7 @@ import java.util.List;
 
 public class messagingActivity extends AppCompatActivity {
 
-    TextView title;
-    TextView description;
+
 
     FirebaseUser firebaseUser;
     DatabaseReference reff;
@@ -48,6 +47,9 @@ public class messagingActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerViewAdapterMessages recyclerViewAdapterMessages;
     List<ResponseMessage> responseMessageList;
+    ValueEventListener valueEventListener;
+
+    String roomId;
 
 
     String message = "";
@@ -78,9 +80,9 @@ public class messagingActivity extends AppCompatActivity {
         reff = FirebaseDatabase.getInstance().getReference();
 
 
-        final String roomId = pUploaderID.compareTo(firebaseUser.getUid())<0?pUploaderID+"_"+firebaseUser.getUid():firebaseUser.getUid()+"_"+pUploaderID;
+        roomId = pUploaderID.compareTo(firebaseUser.getUid())<0?pUploaderID+"_"+firebaseUser.getUid():firebaseUser.getUid()+"_"+pUploaderID;
 
-        reff.child("chats").child(roomId).child("messages").orderByValue().addValueEventListener(new ValueEventListener() {
+         valueEventListener = reff.child("chats").child(roomId).child("messages").orderByValue().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -109,6 +111,8 @@ public class messagingActivity extends AppCompatActivity {
                     }else{
 
                         ResponseMessage chatmessage = new ResponseMessage(message,false);
+                        String epoch = s.getKey();
+                        reff.child("chats").child(roomId).child("messages").child(epoch).child("read").setValue("true");
                         responseMessageList.add(chatmessage);
                         recyclerViewAdapterMessages.notifyDataSetChanged();
                     }
@@ -132,10 +136,11 @@ public class messagingActivity extends AppCompatActivity {
                 String msg = text_send.getText().toString();
                 if(!msg.equals(" ") && !equals("") && !msg.isEmpty()){
                     String timeofsend = String.valueOf(System.currentTimeMillis()/1000);
-                    reff.child("userChats").child(pUploaderID).child(roomId).setValue("true");
-                    reff.child("userChats").child(firebaseUser.getUid()).child(roomId).setValue("true");
+                    reff.child("userChats").child(pUploaderID).child(roomId).child("epoch").setValue(timeofsend);
+                    reff.child("userChats").child(firebaseUser.getUid()).child(roomId).child("epoch").setValue(timeofsend);
                     reff.child("chats").child(roomId).child("messages").child(timeofsend).child("sender").setValue(firebaseUser.getUid());
                     reff.child("chats").child(roomId).child("messages").child(timeofsend).child("message").setValue(text_send.getText().toString());
+                    reff.child("chats").child(roomId).child("messages").child(timeofsend).child("read").setValue("false");
 
                 }else{
 
@@ -161,4 +166,10 @@ public class messagingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        reff.child("chats").child(roomId).child("messages").removeEventListener(valueEventListener);
+        super.onBackPressed();
+    }
 }

@@ -118,7 +118,10 @@ public class ProfileFragment extends Fragment {
 
         //Loading
         progressBar = getActivity().findViewById(R.id.loading);
+
+        if(progressBar!=null)
         progressBar.setVisibility(View.VISIBLE);
+
         yourPostsList.setVisibility(View.GONE);
 
         postsList.orderByChild("PostUploaderID").equalTo(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
@@ -199,7 +202,10 @@ public class ProfileFragment extends Fragment {
 
 
                                           enableBottomBar(true);
+
+                                          if(progressBar!=null)
                                           progressBar.setVisibility(View.INVISIBLE);
+
                                           yourPostsList.setVisibility(View.VISIBLE);
                                       }
                                   }, 1000    //Specific time in milliseconds

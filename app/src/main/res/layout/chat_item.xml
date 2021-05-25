@@ -40,5 +40,17 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"/>
 
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/unreadmsgs"
+        android:background="@drawable/default_button_selector"
+        android:textColor="@color/colorPrimaryDark"
+       android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="30dp"
+        android:gravity="center"
+        android:text=""/>
+
 
 </RelativeLayout>

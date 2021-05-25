@@ -4,6 +4,7 @@ package com.example.seniorprojectjan;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -50,7 +52,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-       setTitle("Chat");
 
        userChats = new ArrayList<>();
        listofchats = findViewById(R.id.recycler_View);
@@ -58,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
        //Adapter
        recyclerViewAdapterChat = new RecyclerViewAdapterChat(this,userChats);
        listofchats.setAdapter(recyclerViewAdapterChat);
+        LinearLayoutManager ll =  new LinearLayoutManager(this);
        listofchats.setLayoutManager(new LinearLayoutManager(this));
 
 
@@ -66,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
        //getting the user chats
-        root.child("userChats").child(userId).addValueEventListener(new ValueEventListener() {
+        root.child("userChats").child(userId).orderByChild("epoch").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -75,6 +77,7 @@ public class ChatActivity extends AppCompatActivity {
                 for (DataSnapshot s: snapshot.getChildren()){
 
                     userChats.add(s.getKey());
+                    Collections.reverse(userChats);
                     recyclerViewAdapterChat.notifyDataSetChanged();
 
                 }

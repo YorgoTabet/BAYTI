@@ -133,7 +133,10 @@ public class SearchFragment extends Fragment{
 
                 //Loading
                 progressBar = getActivity().findViewById(R.id.loading);
+
+               if(progressBar!=null)
                 progressBar.setVisibility(View.VISIBLE);
+
                 listView.setVisibility(View.INVISIBLE);
                 SearchButton.setEnabled(false);
 
@@ -255,7 +258,11 @@ public class SearchFragment extends Fragment{
 
                                           SearchButton.setEnabled(true);
                                           enableBottomBar(true);
+
+                                          if(progressBar!=null)
                                           progressBar.setVisibility(View.INVISIBLE);
+
+
                                           listView.setVisibility(View.VISIBLE);
                                       }
                                   }, 2000    //Specific time in milliseconds

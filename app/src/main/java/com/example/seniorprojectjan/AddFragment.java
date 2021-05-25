@@ -335,8 +335,14 @@ public class AddFragment extends Fragment {
 
                                                     if (ActivityCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
+                                                        Location location = null;
 
-                                                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                                    if(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)!=null){
+
+                                                         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                                                    }
+
                                                         final double longitude = location.getLongitude();
                                                         final double latitude = location.getLatitude();
                                                         postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue(longitude + "," + latitude).addOnCompleteListener(new OnCompleteListener<Void>() {
