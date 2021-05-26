@@ -21,10 +21,10 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="center"
+       android:gravity="center"
        android:id="@+id/picPreviewCont">
 
        <ImageView
-
            android:layout_width="150dp"
            android:layout_height="150dp"
            android:layout_gravity="center"
@@ -34,16 +34,7 @@
            >
 
        </ImageView>
-       <Button
-           android:id="@+id/browsePicBtn"
-           android:layout_height="20dp"
-           android:text="+"
-           android:layout_below="@+id/userPic"
-           android:layout_centerHorizontal="true"
-           android:layout_width="20dp"
-           android:background="@drawable/default_button_selector"
-           android:elevation="15dp"
-           android:layout_margin="5dp"/>
+
 
    </RelativeLayout>
 

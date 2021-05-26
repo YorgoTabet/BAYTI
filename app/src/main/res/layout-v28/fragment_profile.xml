@@ -21,6 +21,7 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_gravity="center"
+       android:gravity="center_vertical"
        android:id="@+id/picPreviewCont"
        android:padding="10dp">
 
@@ -32,17 +33,6 @@
            android:id="@+id/userPic"
            android:background="@drawable/round_corners_list_item"/>
 
-
-       <Button
-           android:id="@+id/browsePicBtn"
-           android:layout_height="20dp"
-           android:text="+"
-           android:layout_below="@+id/userPic"
-           android:layout_centerHorizontal="true"
-           android:layout_width="20dp"
-           android:background="@drawable/default_button_selector"
-           android:elevation="15dp"
-           android:layout_margin="5dp"/>
 
    </RelativeLayout>
 
