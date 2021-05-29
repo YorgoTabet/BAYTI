@@ -1,6 +1,7 @@
 package com.example.seniorprojectjan;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -37,15 +41,14 @@ public class HomeFragment extends Fragment {
     // Getting instance of the database and referencing the root node and the featured list
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference RootReff = database.getReference();
-    DatabaseReference FeaturedpostsList = RootReff.child("Featured");
+    DatabaseReference FeaturedpostsList = RootReff.child("Posts");
 
     //getting the instance of the Image storage  and referrencing the root node
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
 
 
-    ArrayList<String> ListOfItems ;
-    ArrayAdapter<String> arrayAdapter;
+
     ListView listView ;
 
 
@@ -94,7 +97,7 @@ public class HomeFragment extends Fragment {
 
 
         // Getting the featured posts from the database and displaying them
-        FeaturedpostsList.addValueEventListener(new ValueEventListener() {
+        FeaturedpostsList.orderByChild("isFeatured").equalTo("true").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -117,8 +120,22 @@ public class HomeFragment extends Fragment {
                     String parentNode = featuredPropertyItem.getKey();
                     Log.i("Key",parentNode.toString());
 
-                    Log.i("info", Uri.parse(featuredPropertyItem.child("postUrl").getValue().toString()) + featuredPropertyItem.child("PostDescription").getValue().toString() + featuredPropertyItem.child("PostTitle").getValue().toString() + " ID is: " + parentNode);
-                    FeaturedItemsList.add(new CustomList(featuredPropertyItem.child("postUrl").getValue().toString(), featuredPropertyItem.child("PostTitle").getValue().toString(), featuredPropertyItem.child("PostDescription").getValue().toString(), parentNode));
+                    storageRef.child(parentNode).child("1").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                       Uri previewImageUri = uri;
+                        Log.i("info", previewImageUri + featuredPropertyItem.child("PostDescription").getValue().toString() + featuredPropertyItem.child("PostTitle").getValue().toString() + " ID is: " + parentNode);
+                        if (getActivity() != null && !getActivity().isDestroyed()) {
+                            FeaturedItemsList.add(new CustomList(previewImageUri.toString(), featuredPropertyItem.child("PostTitle").getValue().toString(), featuredPropertyItem.child("PostDescription").getValue().toString(), parentNode));
+
+                            CustomArrayAdapter arrayAdapter = new CustomArrayAdapter(getActivity(), 0, FeaturedItemsList);
+                            listView.setAdapter(arrayAdapter);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+
+                    });
                    
                 }
             }
@@ -132,6 +149,19 @@ public class HomeFragment extends Fragment {
 
         // UI settings for the list
         listView.setClipToOutline(true);
+
+
+        //Click Listener for the list
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String PostID = FeaturedItemsList.get(position).getPostId();
+                Log.i("This post ID is:",PostID );
+                Intent intent = new Intent(getContext(),PropertyScreenActivity.class);
+                intent.putExtra("ID",PostID);
+                startActivity(intent);
+            }
+        });
 
 
 

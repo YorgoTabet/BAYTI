@@ -33,8 +33,6 @@ public class CustomArrayAdapter extends ArrayAdapter<CustomList> {
 
 
         View listItemView = convertView;
-         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference();
 
         if (listItemView == null) {
             listItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_list_item, parent, false);
@@ -42,8 +40,6 @@ public class CustomArrayAdapter extends ArrayAdapter<CustomList> {
         }
         CustomList currentItem = getItem(position);
         ImageView imageView = listItemView.findViewById(R.id.PropertyImg);
-       // imageView.setImageResource(currentItem.getPropImgResId());
-        Log.i("Message from ArrayAdapter","URL is "+storageRef.child(currentItem.getPostId()).child("1").getDownloadUrl());
         Glide.with(parent.getContext()).load(Uri.parse(currentItem.getPropImgResId())).dontAnimate().into(imageView);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
