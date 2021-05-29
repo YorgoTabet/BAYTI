@@ -7,6 +7,12 @@ public class CustomList {
     private String PostDescription;
     private String postUrl;
 
+    public Boolean getFeatured() {
+        return isFeatured;
+    }
+
+    private final Boolean isFeatured;
+
     public String getPostId() {
         return postId;
     }
@@ -17,18 +23,20 @@ public class CustomList {
 
     private String postId;
 
-    public CustomList(String imgId, String pTitle, String pDesc, String postId)
+    public CustomList(String imgId, String pTitle, String pDesc, Boolean isFeatured, String postId)
     {
 
         postUrl = imgId;
         PostTitle = pTitle;
         PostDescription = pDesc;
+        this.isFeatured = isFeatured;
 
         this.postId = postId;
     }
 
-    public CustomList() {
+    public CustomList(Boolean isFeatured) {
 
+        this.isFeatured = isFeatured;
     }
 
     public String getPropImgResId()

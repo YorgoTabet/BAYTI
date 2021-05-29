@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -19,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,9 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
@@ -126,7 +122,7 @@ public class HomeFragment extends Fragment {
                        Uri previewImageUri = uri;
                         Log.i("info", previewImageUri + featuredPropertyItem.child("PostDescription").getValue().toString() + featuredPropertyItem.child("PostTitle").getValue().toString() + " ID is: " + parentNode);
                         if (getActivity() != null && !getActivity().isDestroyed()) {
-                            FeaturedItemsList.add(new CustomList(previewImageUri.toString(), featuredPropertyItem.child("PostTitle").getValue().toString(), featuredPropertyItem.child("PostDescription").getValue().toString(), parentNode));
+                            FeaturedItemsList.add(new CustomList(previewImageUri.toString(), featuredPropertyItem.child("PostTitle").getValue().toString(), featuredPropertyItem.child("PostDescription").getValue().toString(), true, parentNode));
 
                             CustomArrayAdapter arrayAdapter = new CustomArrayAdapter(getActivity(), 0, FeaturedItemsList);
                             listView.setAdapter(arrayAdapter);

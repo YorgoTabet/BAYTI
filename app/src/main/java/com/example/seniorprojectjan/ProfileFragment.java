@@ -2,7 +2,6 @@ package com.example.seniorprojectjan;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,9 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,10 +38,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
@@ -150,7 +143,7 @@ public class ProfileFragment extends Fragment {
                             previewImageUri= uri;
                             Log.i("info", previewImageUri + searchResultproperty.child("PostDescription").getValue().toString() + searchResultproperty.child("PostTitle").getValue().toString() + " ID is: " + parentNode);
                             if(getActivity()!=null && !getActivity().isDestroyed() ) {
-                                yourPosts.add(new CustomList(previewImageUri.toString(), searchResultproperty.child("PostTitle").getValue().toString(), searchResultproperty.child("PostDescription").getValue().toString(), parentNode));
+                                yourPosts.add(new CustomList(previewImageUri.toString(), searchResultproperty.child("PostTitle").getValue().toString(), searchResultproperty.child("PostDescription").getValue().toString(), false, parentNode));
 
                                 CustomArrayAdapter arrayAdapter = new CustomArrayAdapter(getActivity(), 0, yourPosts);
                                 yourPostsList.setAdapter(arrayAdapter);

@@ -2,7 +2,6 @@ package com.example.seniorprojectjan;
 
 
 import android.app.AlertDialog;
-import android.app.LauncherActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -193,7 +192,7 @@ public class SearchFragment extends Fragment{
 
                                previewImageUri= uri;
                                Log.i("info", previewImageUri + searchResultproperty.child("PostDescription").getValue().toString() + searchResultproperty.child("PostTitle").getValue().toString() + " ID is: " + parentNode);
-                               searchResultItems.add(new CustomList(previewImageUri.toString(), searchResultproperty.child("PostTitle").getValue().toString(), searchResultproperty.child("PostDescription").getValue().toString(), parentNode));
+                               searchResultItems.add(new CustomList(previewImageUri.toString(), searchResultproperty.child("PostTitle").getValue().toString(), searchResultproperty.child("PostDescription").getValue().toString(), false, parentNode));
 
                                CustomArrayAdapter arrayAdapter = new CustomArrayAdapter(getActivity(), 0, searchResultItems);
                                listView.setAdapter(arrayAdapter);

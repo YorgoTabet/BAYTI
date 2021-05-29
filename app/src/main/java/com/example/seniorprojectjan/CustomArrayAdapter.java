@@ -49,6 +49,12 @@ public class CustomArrayAdapter extends ArrayAdapter<CustomList> {
         textView1.setText(currentItem.getPropDescription());
         parent.setTag(currentItem.getPostId());
 
+        if(currentItem.getFeatured() == null || !currentItem.getFeatured())
+            listItemView.findViewById(R.id.star).setVisibility(View.GONE);
+        else
+            listItemView.findViewById(R.id.star).setVisibility(View.VISIBLE);
+
+
         return listItemView;
     }
 }
