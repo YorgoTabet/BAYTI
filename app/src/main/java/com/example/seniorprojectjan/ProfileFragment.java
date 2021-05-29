@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -148,6 +149,20 @@ public class ProfileFragment extends Fragment {
                                 CustomArrayAdapter arrayAdapter = new CustomArrayAdapter(getActivity(), 0, yourPosts);
                                 yourPostsList.setAdapter(arrayAdapter);
                                 arrayAdapter.notifyDataSetChanged();
+
+                                ListAdapter listadp = yourPostsList.getAdapter();
+                                if (listadp != null) {
+                                    int totalHeight = 0;
+                                    for (int i = 0; i < listadp.getCount(); i++) {
+                                        View listItem = listadp.getView(i, null, yourPostsList);
+                                        listItem.measure(0, 0);
+                                        totalHeight += listItem.getMeasuredHeight();
+                                    }
+                                    ViewGroup.LayoutParams params = yourPostsList.getLayoutParams();
+                                    params.height = totalHeight + (yourPostsList.getDividerHeight() * (listadp.getCount() - 1));
+                                    yourPostsList.setLayoutParams(params);
+                                    yourPostsList.requestLayout();
+                                }
                             }
 
 

@@ -71,10 +71,10 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/infoBox"
         android:layout_marginStart="-75dp"
-        android:padding="10dp"
+        android:padding="15dp"
         android:visibility="gone"
         android:id="@+id/star"/>
-
+n
 </RelativeLayout>
 
 
