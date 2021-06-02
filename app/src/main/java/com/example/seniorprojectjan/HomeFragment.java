@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
+        getActivity().findViewById(R.id.nav_home).setEnabled(false);
 
 
 
@@ -169,7 +169,17 @@ public class HomeFragment extends Fragment {
 
         }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().findViewById(R.id.nav_home).setEnabled(true);
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getActivity().findViewById(R.id.nav_home).setEnabled(true);
+    }
 }
 
 

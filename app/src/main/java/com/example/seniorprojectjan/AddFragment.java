@@ -142,6 +142,10 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+            getActivity().findViewById(R.id.nav_add).setEnabled(false);
+
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
@@ -281,6 +285,7 @@ public class AddFragment extends Fragment {
                     Toast.makeText(getContext(), "Please Fill All Fields", Toast.LENGTH_SHORT).show();
                     uploadBtn.setEnabled(true);
                     enableBottomBar(true);
+                    enableViews(getView(), true);
 
                 } else {
                     final ProgressBar progressBar = getActivity().findViewById(R.id.loading);
@@ -509,5 +514,15 @@ public class AddFragment extends Fragment {
         v.setEnabled(enabled);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().findViewById(R.id.nav_add).setEnabled(true);
+    }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getActivity().findViewById(R.id.nav_add).setEnabled(true);
+    }
 }

@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"You clicked on fab button",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this,ChatActivity.class);
              startActivity(intent);
             }

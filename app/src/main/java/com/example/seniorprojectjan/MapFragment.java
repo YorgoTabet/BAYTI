@@ -6,6 +6,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,8 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -35,6 +41,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -133,9 +140,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
         ViewpostBtn = getActivity().findViewById(R.id.ViewpostBtn);
-        ViewpostBtn.setEnabled(false);
+        ViewpostBtn.setVisibility(View.GONE);
          fab = getActivity().findViewById(R.id.chatFloatingButton);
         fab.setVisibility(View.GONE);
+        getActivity().findViewById(R.id.nav_map).setEnabled(false);
 
     }
 
@@ -250,14 +258,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (final DataSnapshot locations : snapshot.getChildren()) {
 
+
                     String PostID = locations.getKey();
                     String sourceLoc = locations.getValue().toString();
                     String[] latlng = sourceLoc.split(",");
                     final double longitude = Double.parseDouble(latlng[0]);
                     final double latitude = Double.parseDouble(latlng[1]);
                     LatLng userLocation = new LatLng(latitude, longitude);
-                    mMap.addMarker(new MarkerOptions().position(userLocation).title(PostID));
-                    Log.i("Info", "ID: " + PostID + " Location: " + sourceLoc);
+
+                    //getting the post Title
+                   RootReff.child("Posts").child(locations.getKey()).child("PostTitle").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                       @Override
+                       public void onComplete(@NonNull Task<DataSnapshot> task) {
+
+
+
+                            if(getActivity()!=null && !getActivity().isDestroyed() ) {
+                                Marker marker = mMap.addMarker(new MarkerOptions()
+                                        .position(userLocation)
+                                        .title(task.getResult().getValue() == null ? "ERROR" : task.getResult().getValue().toString())
+                                        .icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_blip)));
+
+
+                                marker.setTag(PostID);
+                                Log.i("Info", "ID: " + PostID + " Location: " + sourceLoc);
+                            }
+
+                       }
+                   });
+
+
 
                 }
             }
@@ -271,9 +301,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker.getTitle() != "YOU")
-                    selectedPostID = marker.getTitle();
-                ViewpostBtn.setEnabled(true);
+                if (marker.getTag().toString() != "YOU")
+                    selectedPostID = marker.getTag().toString();
+                ViewpostBtn.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -281,7 +311,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
             @Override
             public void onInfoWindowClose(Marker marker) {
-                ViewpostBtn.setEnabled(false);
+                ViewpostBtn.setVisibility(View.GONE);
             }
         });
 
@@ -305,6 +335,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             super.onDetach();
             mMap.clear();
             fab.setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.nav_map).setEnabled(true);
 
         }
 
@@ -313,6 +344,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onDestroy();
         mMap.clear();
         fab.setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.nav_map).setEnabled(true);
+    }
+
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
+        Drawable background = ContextCompat.getDrawable(context, vectorDrawableResourceId);
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
 

@@ -72,7 +72,7 @@ public class SearchFragment extends Fragment{
 
 
 
-
+        getActivity().findViewById(R.id.nav_search).setEnabled(false);
 
 
         return inflater.inflate(R.layout.fragment_search, container, false);
@@ -271,5 +271,15 @@ public class SearchFragment extends Fragment{
     }
 
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getActivity().findViewById(R.id.nav_search).setEnabled(true);
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().findViewById(R.id.nav_search).setEnabled(true);
+    }
 }

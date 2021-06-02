@@ -78,6 +78,8 @@ public class ProfileFragment extends Fragment {
 
 
 
+            getActivity().findViewById(R.id.nav_profile).setEnabled(false);
+
 
 
         // Profile settings
@@ -256,6 +258,18 @@ public class ProfileFragment extends Fragment {
         for (int i = 0; i < navBar.getMenu().size(); i++) {
             navBar.getMenu().getItem(i).setEnabled(enable);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().findViewById(R.id.nav_profile).setEnabled(true);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        getActivity().findViewById(R.id.nav_profile).setEnabled(true);
     }
 
 

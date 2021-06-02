@@ -53,6 +53,8 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
 
+
+
        userChats = new ArrayList<>();
        listofchats = findViewById(R.id.recycler_View);
 
@@ -97,8 +99,8 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-
     }
+
 
 
 }
