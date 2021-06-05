@@ -332,6 +332,9 @@ public class PropertyScreenActivity extends AppCompatActivity {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button clicked
+                                Toast.makeText(PropertyScreenActivity.this, "Post Deleted", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(PropertyScreenActivity.this,MainActivity.class);
+                                startActivity(intent);
                                 currentPost.removeEventListener(ValueListener);
                                 postsList.child(postID).removeValue();
                                 RootReff.child("Latlngs").child(postID).removeValue();
@@ -339,9 +342,7 @@ public class PropertyScreenActivity extends AppCompatActivity {
                                 {
                                     storageRef.child(postID).child(String.valueOf(i)).delete();
                                 }
-                                Toast.makeText(PropertyScreenActivity.this, "Post Deleted", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(PropertyScreenActivity.this,MainActivity.class);
-                                startActivity(intent);
+                                storageRef.child(postID).delete();
                                 finish();
 
                                 break;
@@ -381,31 +382,31 @@ public class PropertyScreenActivity extends AppCompatActivity {
 
 
 
-    public void getImages(final int PostID){
-
+    public void getImages(final int PostID) {
+try{
         postsList.child(String.valueOf(PostID)).child("numberOfImages").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    numberofImages = Integer.parseInt(task.getResult().getValue().toString()) ;
-                    Log.i("Number of Images",String.valueOf(numberofImages) );
-                    for(int i=1; i <= numberofImages; i++){
+                if (task.isSuccessful()) {
+                    numberofImages = Integer.parseInt(task.getResult().getValue().toString());
+                    Log.i("Number of Images", String.valueOf(numberofImages));
+                    for (int i = 1; i <= numberofImages; i++) {
 
 
                         postImages.child(String.valueOf(i)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
 
-                                if(!PropertyScreenActivity.this.isDestroyed()){
+                                if (!PropertyScreenActivity.this.isDestroyed()) {
 
 
-                                    ImageUri=uri;
-                                    Log.i("Uri",ImageUri.toString());
+                                    ImageUri = uri;
+                                    Log.i("Uri", ImageUri.toString());
                                     ImageView image = new ImageView(PropertyScreenActivity.this);
                                     Glide.with(PropertyScreenActivity.this).load(ImageUri).dontAnimate().into(image);
                                     imageContainer = PropertyScreenActivity.this.findViewById(R.id.ImageContainer);
 
-                                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(400, 420) ;
+                                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(400, 420);
                                     image.setLayoutParams(lp);
                                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -419,8 +420,6 @@ public class PropertyScreenActivity extends AppCompatActivity {
                                 }
 
 
-
-
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -430,19 +429,16 @@ public class PropertyScreenActivity extends AppCompatActivity {
                         });
 
 
-
                     }
 
-                }else{
+                } else {
                     Toast.makeText(PropertyScreenActivity.this, "Error...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        new Handler().postDelayed(new Runnable()
-                                  {
-                                      public void run()
-                                      {
+        new Handler().postDelayed(new Runnable() {
+                                      public void run() {
 
                                           isloading = false;
 
@@ -450,6 +446,14 @@ public class PropertyScreenActivity extends AppCompatActivity {
                                   }, 3000    //Specific time in milliseconds
         );
         isloading = false;
+
+    }catch(Exception e){
+    Toast.makeText(this, "Error Occured", Toast.LENGTH_SHORT).show();
+    Intent intent = new Intent(PropertyScreenActivity.this, MainActivity.class);
+    startActivity(intent);
+    PropertyScreenActivity.this.finish();
+
+}
 
     }
 

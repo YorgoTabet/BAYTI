@@ -82,6 +82,7 @@ public class ProfileFragment extends Fragment {
 
 
 
+
         // Profile settings
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -108,6 +109,8 @@ public class ProfileFragment extends Fragment {
         emailtxt = getView().findViewById(R.id.emailTxtView);
         signOutBtn = getView().findViewById(R.id.signOutButton);
         yourPostsList = getView().findViewById(R.id.yourPostsList);
+
+        userPic.setClipToOutline(true);
 
 
 
@@ -221,7 +224,7 @@ public class ProfileFragment extends Fragment {
                                   }, 1000    //Specific time in milliseconds
         );
 
-        Glide.with(this).load(currentUser.getPhotoUrl()).into(userPic);
+        Glide.with(this).load(currentUser.getPhotoUrl()==null?R.drawable.profile:currentUser.getPhotoUrl()).into(userPic);
         userPic.setClipToOutline(true);
         uidtxt.setText(currentUser.getUid().toString());
         usernametxt.setText(currentUser.getDisplayName().toString());

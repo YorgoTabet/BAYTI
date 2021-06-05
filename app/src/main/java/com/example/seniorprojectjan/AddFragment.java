@@ -2,6 +2,7 @@ package com.example.seniorprojectjan;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Context;
@@ -38,7 +39,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.CancellationToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -94,6 +98,8 @@ public class AddFragment extends Fragment {
     LocationManager lm;
 
 
+    private FusedLocationProviderClient fusedLocationClient;
+
     BottomNavigationView navBar;
 
 
@@ -119,21 +125,18 @@ public class AddFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
 
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            radioBtnYes.setChecked(true);
 
 
-                RadioButtonNo.setChecked(true);
-
-
-            }
-
-
+        }else {
+            RadioButtonNo.setChecked(true);
+            radioBtnYes.setEnabled(false);
         }
-
 
     }
 
@@ -145,11 +148,8 @@ public class AddFragment extends Fragment {
 
             getActivity().findViewById(R.id.nav_add).setEnabled(false);
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-
-        }
 
 
 
@@ -205,6 +205,11 @@ public class AddFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
 
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions( new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+
+        }
+
         navBar = getActivity().findViewById(R.id.Bottom_Nav);
         RadioButtonNo = getActivity().findViewById(R.id.RadioButtonNo);
 
@@ -256,7 +261,7 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+                  requestPermissions( new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
 
                 }
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -342,26 +347,46 @@ public class AddFragment extends Fragment {
 
                                                         Location location = null;
 
-                                                    if(lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)!=null){
 
-                                                         location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-                                                    }
+                                                        fusedLocationClient.getCurrentLocation(100,null)
+                                                                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                                                                    @SuppressLint("MissingPermission")
+                                                                    @Override
+                                                                    public void onSuccess(Location location) {
+                                                                        // Got last known location. In some rare situations this can be null.
+                                                                        if (location != null) {
+                                                                            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                                                            final double longitude = location.getLongitude();
+                                                                            final double latitude = location.getLatitude();
 
-                                                        final double longitude = location.getLongitude();
-                                                        final double latitude = location.getLatitude();
-                                                        postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue(longitude + "," + latitude).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                RootReff.child("Latlngs").child(String.valueOf(PostId)).setValue(longitude + "," + latitude);
-                                                                Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
-                                                                Intent intent = new Intent(getContext(), MainActivity.class);
-                                                                startActivity(intent);
-                                                                getActivity().finish();
+                                                                            postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue(longitude + "," + latitude).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    RootReff.child("Latlngs").child(String.valueOf(PostId)).setValue(longitude + "," + latitude);
+                                                                                    Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
+                                                                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                                                                    startActivity(intent);
+                                                                                    getActivity().finish();
 
-                                                            }
+                                                                                }
 
-                                                        });
+                                                                            });
+                                                                        } else {
+                                                                            postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue("None").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
+                                                                                    Intent intent = new Intent(getContext(), MainActivity.class);
+                                                                                    startActivity(intent);
+                                                                                    getActivity().finish();
+
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+
 
                                                     } else {
                                                         postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue("None").addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -377,10 +402,20 @@ public class AddFragment extends Fragment {
 
 
                                                     }
-                                                }
-                                        }
+                                                } else {
+                                                    postsList.child(String.valueOf(PostId)).child("PostLatLng").setValue("None").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Toast.makeText(getContext(), "UPLOAD COMPLETE!", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(getContext(), ProfileFragment.class);
+                                                            startActivity(intent);
+                                                            getActivity().finish();
+                                                        }
+                                                    });
 
-                                    });
+                                                }
+                                            }
+                                        });
                                     }
 
 
