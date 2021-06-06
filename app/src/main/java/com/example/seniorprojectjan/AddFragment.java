@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,6 +163,8 @@ public class AddFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
 
+        int oldpics = bitmaps.size()==0?0:bitmaps.size()+1;
+
         if (requestCode == 1 && resultCode == RESULT_OK) {
 
             ClipData clipData = data.getClipData();
@@ -195,7 +198,7 @@ public class AddFragment extends Fragment {
             }
 
 
-            setthelist(bitmaps);
+            setthelist(bitmaps,oldpics);
 
 
         }
@@ -342,8 +345,10 @@ public class AddFragment extends Fragment {
 
                                                 if (radioBtnYes.isChecked()) {
 
-
-                                                    if (ActivityCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AddFragment.this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                                                    if(getContext()!=null)
+                                                    if (ActivityCompat.checkSelfPermission(getContext(),
+                                                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
+                                                            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
                                                         Location location = null;
 
@@ -437,6 +442,8 @@ public class AddFragment extends Fragment {
                                 Toast.makeText(getContext(), "Error while uploading... Please Retry", Toast.LENGTH_SHORT).show();
                                 uploadBtn.setEnabled(false);
                                 enableBottomBar(true);
+                                getActivity().findViewById(R.id.nav_add).setEnabled(true);
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
 
@@ -456,13 +463,57 @@ public class AddFragment extends Fragment {
         }
     }
 
-    public void setthelist(final List<Bitmap> bitmaps)
-    {
+    public void setthelist(final List<Bitmap> bitmaps, int oldpics) {
 
 
-       //setting the images in the list in the UI
-        for( final Bitmap b : bitmaps)
-        {
+        //setting the images in the list in the UI
+        if (oldpics != 0) {
+            for (int i = oldpics - 1; i < bitmaps.size(); i++) {
+
+                final LinearLayout imageContainer = getView().findViewById(R.id.ImageContainer);
+                ImageView image = new ImageView(getContext());
+
+                //Fixing the image and its sizing and scaling
+                //Bitmap bitmap = Bitmap.createScaledBitmap(b,(b.getWidth()/2)>400?400 : b.getWidth()/2,420,true);
+
+
+                //image view sizing
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(400, 420);
+                image.setLayoutParams(lp);
+
+                // setting the image
+                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                image.setImageDrawable(new BitmapDrawable(getResources(), bitmaps.get(i)));
+
+
+                //Adding the Image to the Container
+                imageContainer.addView(image);
+
+                image.setTag(new Integer(bitmaps.indexOf(bitmaps.get(i))));
+
+                int finalI = i;
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        imageContainer.removeView(image);
+                        bitmaps.remove(bitmaps.get(Integer.valueOf(finalI)));
+                        Log.i("bitmap",String.valueOf(bitmaps.size()));
+
+                        /*imageContainer.removeAllViews();*/
+                        //setthelist(bitmaps);
+                    }
+                });
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) image.getLayoutParams();
+                layoutParams.setMargins(0, 10, 10, 10);
+
+
+            }
+
+
+        } else {
+
+        for (final Bitmap b : bitmaps) {
 
             final LinearLayout imageContainer = getView().findViewById(R.id.ImageContainer);
             ImageView image = new ImageView(getContext());
@@ -472,16 +523,12 @@ public class AddFragment extends Fragment {
 
 
             //image view sizing
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(400, 420) ;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(400, 420);
             image.setLayoutParams(lp);
 
             // setting the image
             image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            image.setImageDrawable(new BitmapDrawable(getResources(),b));
-
-
-
-
+            image.setImageDrawable(new BitmapDrawable(getResources(), b));
 
 
             //Adding the Image to the Container
@@ -491,17 +538,19 @@ public class AddFragment extends Fragment {
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    imageContainer.removeView(image);
                     bitmaps.remove(bitmaps.indexOf(b));
-                    imageContainer.removeAllViews();
-                    setthelist(bitmaps);
+                    Log.i("bitmap",String.valueOf(bitmaps.size()));
+                    //imageContainer.removeAllViews();
+                    //setthelist(bitmaps);
                 }
             });
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) image.getLayoutParams();
             layoutParams.setMargins(0, 10, 10, 10);
 
 
-
         }
+    }
 
     }
 
