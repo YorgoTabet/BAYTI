@@ -34,6 +34,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -152,6 +153,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+         FusedLocationProviderClient fusedLocationClient;
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        fusedLocationClient.getCurrentLocation(100,null).addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+               Bitmap icon =  BitmapFactory.decodeResource(getContext().getResources(), R.drawable.you);
+                userLocation = new LatLng(task.getResult().getLatitude(),task.getResult().getLongitude());
+               Marker you = mMap.addMarker(new MarkerOptions().position(userLocation).title("YOU"));
+               you.setIcon(BitmapDescriptorFactory.fromBitmap(icon));
+               you.showInfoWindow();
+                //We can add this line to make the camera move with the user
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+            }
+        });
+
+
+
         intent = getActivity().getIntent();
         final String postID = intent.getStringExtra("ID");
         if(postID!=null)
@@ -170,7 +189,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             final double longitude = Double.parseDouble(latlng[0]);
                             final double latitude = Double.parseDouble(latlng[1]);
                             LatLng locationtofocus = new LatLng(latitude, longitude);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationtofocus, ((float) 15)));
+
 
                         }
 
@@ -192,9 +211,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mMap = googleMap;
 
-        //Set the camera over lebanon
-        LatLng lebanonLoc = new LatLng(33.8138, 35.8535);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lebanonLoc, ((float) 8.5)));
+
 
         //Gets the person location.
         lManager = (LocationManager) getContext().getSystemService((Context.LOCATION_SERVICE));
@@ -301,9 +318,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (marker.getTag().toString() != "YOU")
-                    selectedPostID = marker.getTag().toString();
-                ViewpostBtn.setVisibility(View.VISIBLE);
+                if(marker.getTag()!=null ) {
+                    if (marker.getTag().toString() != "YOU")
+                        selectedPostID = marker.getTag().toString();
+
+                    ViewpostBtn.setVisibility(View.VISIBLE);
+                }
                 return false;
             }
         });

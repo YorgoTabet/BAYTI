@@ -176,7 +176,7 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(getActivity(), "Failed to load images", Toast.LENGTH_SHORT).show();
-                            previewImageUri=Uri.parse("https://firebasestorage.googleapis.com/v0/b/senior-774ec.appspot.com/o/Error.png?alt=media&token=105e314c-f283-4829-9c25-439930014fdc");
+
 
                         }
                     }).addOnCompleteListener(new OnCompleteListener<Uri>() {
